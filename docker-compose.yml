@@ -11,6 +11,14 @@ services:
       MYSQL_PASSWORD: django
     ports:
       - "3306:3306"
+
+  node: 
+    image: etherpadlite
+    command: ./bin/run.sh
+    ports:
+      - "9001:9001"
+    depends_on:
+      - db
   web:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
@@ -18,3 +26,4 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - node
