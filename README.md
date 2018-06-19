@@ -12,18 +12,20 @@ COLLABORATION SYSTEM
                 Mysql
 
         Django pakages installed - 
-
-                Django Rest Framework
-                Widget Tweaks
-                Django Reversion
-                Reversion Compare
-                MPTT
-                Haystack
-                Django Machina
-                Django-cors-headers
-                Django-role-permission
-                Django_comments_xtd
-                Django_comments
+		
+		Django Rest Framewo
+		Widget Tweaks
+		Django Reversion
+		Reversion Compare
+		MPTT
+		Haystack
+		Django Machina
+		Django-cors-headers
+		Django-role-permission
+		Django_comments_xtd
+		Django_comments
+		Django_wiki
+		PyEtherpadLite
 
 For development installation - 
 
@@ -87,21 +89,27 @@ For development installation -
 				 NODESERVERPORT=9001
 
             
-7.  Clone the following directory:
+7.Clone etherpad-lite from https://github.com/ether/etherpad-lite
 
-			git clone http://github.com/dhanushsr/etherpad-lite
-			cd etherpad-lite/
-			./bin/run.sh
+		git clone https://github.com/ether/etherpad-lite
+
+8. Clone the following directory and place the contents of `etherpad-lite` folder in `etherpad-lite(Node Application)` root directory.
+
+		git clone https://github.com/fresearchgroup/Community-Content-Tools/
+		
+9. Install Node JS from https://nodejs.org/
+
+10. Run the following commands
+	
+		./bin/run.sh
+
+11. Place the `APIKEY` in `.env` folder of `Collaboration-System`
+
+		cat APIKEY.txt
+		cd path/to/collaboration-communities
+		vi .env
 			
-8. Install PyEtherLite--
-			
-			git clone http://github.com/dhanushsr/PyEtherpadLite
-			cd PyEtherpadLite
-			python setup.py install
-			cd ..
-			
-9. Paste the apikey from APIKEY.text from etherpad-lite folder in the .env file
-9. Do all the migrations going back to django directory--
+9. Do all the migrations going back to `Collaboration Communities` directory--
 
 	      python3 manage.py migrate 
 
@@ -116,25 +124,46 @@ For automated installation using nginx and gunicorn- https://github.com/abhisgit
 
 Steps for Docker -- 
 
- -- Install Docker and Docker-Compose from  --
+1. Install Collaboration Communities from https://github.com/fresearchgroup/Collaboration-System/
+		
+		git clone https://github.com/fresearchgroup/Collaboration-System/
+		
+2. Clone etherpad-lite from https://github.com/ether/etherpad-lite
 
-	    Docker - https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository
-    
-	    Docker Compose -- https://docs.docker.com/compose/install/
+		git clone https://github.com/ether/etherpad-lite
 
-1. Clone the repository --
+3. Clone the following directory and place the contents of `etherpad-lite` folder in `etherpad-lite(Node Application)` root directory.
 
-   git clone https://github.com/fresearchgroup/Collaboration-System.git
+		git clone https://github.com/fresearchgroup/Community-Content-Tools/
+		
+4. Install Node JS from https://nodejs.org/
+5. Install Docker from https://docs.docker.com/install/linux/docker-ce/ubuntu/#set-up-the-repository
+6. Install Docker-Compose form https://docs.docker.com/compose/install/
+7. In the `etherpad-lite` folder run the following commands
 
-2. The run the following commands inside the repository --
- 
-
-
-		docker-compose build
+		sudo docker build -t etherpadlite .
+		
+8. Setup MySQL Database in Docker
+  		 
+		 docker-compose build
 
 		 docker-compose up db
 
 		 docker exec -i <container-image-name> mysql -u<username> -p<password> django < collab.sql
+
+9. Setup environment for Django app.
+ 
+		sudo docker run -p 9001:9001 etherpadlite 
+		sudo docker ps
+		
+   Using the container image from above
+	
+		sudo docker exec -i <image-name> cat APIKEY.txt
+	
+11. Place the above string in the `.env.docker` in `Collaboration-Communities` folder for `APIKEY` variable.
+12. Place the `IP address` of docker in the `.env.docker` in `Collaboration-Communities` folder for `NODESERVERURL` variable.
+13. The run the following commands inside the repository --
+ 
 
 		 docker-compose run web python manage.py migrate
 
@@ -143,3 +172,4 @@ Steps for Docker --
 		 docker-compose run web python manage.py loaddata workflow roles faq
 
 		 docker-compose up
+		 
